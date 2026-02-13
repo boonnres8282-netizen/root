@@ -1,32 +1,34 @@
-let current = 1;
-const correctPin = "1402"; // ← เปลี่ยนรหัสตรงนี้
-
-function nextPage() {
-  document.getElementById(`page${current}`).classList.remove("active");
-  current++;
-  document.getElementById(`page${current}`).classList.add("active");
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
-function checkPin() {
-  const pin = document.getElementById("pin").value;
-  if (pin === correctPin) {
-    nextPage();
-  } else {
-    alert("รหัสไม่ถูกนะ ลองใหม่อีกครั้ง 💔");
-  }
+#wrapper {
+  height: 100vh;
+  transition: transform 0.6s ease;
 }
 
-function restart() {
-  document.getElementById(`page${current}`).classList.remove("active");
-  current = 1;
-  document.getElementById("page1").classList.add("active");
+.page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-const startDate = new Date("2024-02-14"); // วันเริ่มคบ
-setInterval(() => {
-  const now = new Date();
-  const diff = now - startDate;
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  document.getElementById("timer").innerText =
-    `${days} วันแห่งความรัก 💞`;
-}, 1000);
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #ff9ecf, #ffc1e3);
+  font-family: sans-serif;
+  text-align: center;
+}
+
+button {
+  padding: 12px 20px;
+  margin-top: 20px;
+  border-radius: 20px;
+  border: none;
+  background: #ff4f9a;
+  color: white;
+  font-size: 16px;
+}
