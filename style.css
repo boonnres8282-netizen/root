@@ -1,36 +1,49 @@
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: pink;
-  text-align: center;
+let currentPage = 0;
+const pages = document.querySelectorAll(".page");
+const wrapper = document.getElementById("wrapper");
+let isScrolling = false;
+
+function scrollToPage(index) {
+  if (index < 0 || index >= pages.length) return;
+  isScrolling = true;
+  currentPage = index;
+  wrapper.style.transform = `translateY(-${index * 100}vh)`;
+  setTimeout(() => isScrolling = false, 700);
 }
 
-.page {
-  display: none;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+// mouse wheel (คอม)
+window.addEventListener("wheel", (e) => {
+  if (isScrolling) return;
+  if (e.deltaY > 0) scrollToPage(currentPage + 1);
+  else scrollToPage(currentPage - 1);
+});
+
+// touch (มือถือ)
+let startY = 0;
+window.addEventListener("touchstart", e => {
+  startY = e.touches[0].clientY;
+});
+
+window.addEventListener("touchend", e => {
+  let endY = e.changedTouches[0].clientY;
+  if (isScrolling) return;
+  if (startY - endY > 50) scrollToPage(currentPage + 1);
+  if (endY - startY > 50) scrollToPage(currentPage - 1);
+});
+
+// PIN
+function checkPin() {
+  const pin = document.getElementById("pin").value;
+  if (pin === "1402") scrollToPage(currentPage + 1);
+  else alert("รหัสไม่ถูกนะ 💔");
 }
 
-.page.active {
-  display: flex;
-}
-
-button {
-  padding: 12px 20px;
-  margin-top: 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 20px;
-  background: #ff5ca8;
-  color: white;
-  cursor: pointer;
-}
-
-input {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-}
+// TIMER
+const startDate = new Date("2024-02-14");
+setInterval(() => {
+  const now = new Date();
+  const diff = now - startDate;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  document.getElementById("timer").innerText =
+    `${days} วัน ${Math.floor(diff / 3600000) % 24} ชม. ❤️`;
+}, 1000);
